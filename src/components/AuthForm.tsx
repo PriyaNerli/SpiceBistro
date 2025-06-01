@@ -35,22 +35,28 @@ export default function AuthForm() {
   const [isRegisterMode, setIsRegisterMode] = useState(false);
 
   const formSchema = isRegisterMode ? registerSchema : loginSchema;
-  type FormValues = isRegisterMode ? RegisterFormValues : LoginFormValues;
+
+  // CORRECTED LINE: Define FormValues as a union type
+  type FormValues = RegisterFormValues | LoginFormValues;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: isRegisterMode 
-      ? { fullName: "", email: "", password: "" } 
-      : { email: "", password: "" },
+    // Ensure default values cover all possible fields for the union type,
+    // and provide sensible defaults for fields not present in a specific mode.
+    defaultValues: isRegisterMode
+      ? { fullName: "", email: "", password: "" }
+      : { fullName: "", email: "", password: "" }, // Include fullName for consistency in defaultValues
   });
 
   // Reset form when switching modes
   const toggleMode = () => {
     setIsRegisterMode(!isRegisterMode);
-    form.reset(isRegisterMode // if current is register, new mode is login
-      ? { email: "", password: "" } 
-      : { fullName: "", email: "", password: "" }
-    ); 
+    // When switching, reset with appropriate default values for the NEW mode
+    form.reset(
+        !isRegisterMode // if currently in register mode (true), new mode is login (false)
+            ? { email: "", password: "" } // defaults for login mode
+            : { fullName: "", email: "", password: "" } // defaults for register mode
+    );
   };
 
 

@@ -26,7 +26,7 @@ export default function AboutPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl">
           <Image
-            src="https://placehold.co/600x400.png"
+            src="/Restaurant Interior.jpg"
             alt="Restaurant Interior"
             width={600}
             height={400}
@@ -78,7 +78,7 @@ export default function AboutPage() {
       <section className="grid md:grid-cols-2 gap-8 items-center">
         <div className="rounded-lg overflow-hidden shadow-xl order-last md:order-first">
             <Image
-                src="https://placehold.co/600x400.png"
+                src="/Indian Spices.jpg"
                 alt="Indian Spices"
                 width={600}
                 height={400}
