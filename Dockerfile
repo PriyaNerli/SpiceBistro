@@ -1,23 +1,30 @@
-# 1. Use official Node.js LTS image
-FROM node:18-alpine AS base
+# Use the official Node.js 18 image as base
+FROM node:18-alpine
 
-# 2. Set working directory
+# Set working directory
 WORKDIR /app
 
-# 3. Install dependencies (only package.json and lock file to optimize Docker layer caching)
-COPY package.json package-lock.json* yarn.lock* ./
+# Install OS dependencies
+RUN apk add --no-cache libc6-compat
 
-# 4. Install dependencies
-RUN npm install --frozen-lockfile
+# Copy package.json and package-lock.json / yarn.lock / pnpm-lock.yaml
+COPY package.json ./
+COPY package-lock.json ./
 
-# 5. Copy the rest of the code
+# Install dependencies
+RUN npm install
+
+# Copy rest of the application
 COPY . .
 
-# 6. Build the Next.js app
+# Build the application
 RUN npm run build
 
-# 7. Expose the desired port (optional)
+# Expose the port Next.js will run on
 EXPOSE 3000
 
-# 8. Start the app
+# Set environment variables if needed (optional)
+# ENV NODE_ENV production
+
+# Start the application
 CMD ["npm", "start"]
